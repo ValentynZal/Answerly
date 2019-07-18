@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # local apps
     'pages',
+    # third party packages
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
