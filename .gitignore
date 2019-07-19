@@ -17,6 +17,7 @@ env.bak/
 venv.bak/
 
 ## Frontend ###
+**/.vscode
 # dependencies
 **/node_modules
 **/.pnp
