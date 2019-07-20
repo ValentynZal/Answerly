@@ -1,5 +1,6 @@
 import React from 'react';
-import { Route, withRouter } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Header from './Components/Header';
@@ -7,7 +8,7 @@ import Home from './pages/Home';
 import Questions from './pages/Questions';
 import Tags from './pages/Tags';
 
-function App({ location: { pathname } }) {
+function App({ pathname }) {
   return (
     <>
       { pathname !== '/' ? <Header /> : null }
@@ -19,9 +20,7 @@ function App({ location: { pathname } }) {
 }
 
 App.propTypes = {
-  location: PropTypes.shape({
-    pathname: PropTypes.string.isRequired,
-  }).isRequired,
+  pathname: PropTypes.string.isRequired,
 };
 
-export default withRouter(App);
+export default connect(state => ({ pathname: state.router.location.pathname }))(App);
