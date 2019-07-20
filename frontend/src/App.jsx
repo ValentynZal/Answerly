@@ -3,9 +3,9 @@ import { Route, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import Header from './Components/Header';
-import Home from './Home';
-import Questions from './Questions';
-import Tags from './Tags';
+import Home from './pages/Home';
+import Questions from './pages/Questions';
+import Tags from './pages/Tags';
 
 function App({ location: { pathname } }) {
   return (
@@ -22,5 +22,6 @@ App.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired,
   }).isRequired,
-}
+};
+
 export default withRouter(App);

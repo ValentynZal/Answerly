@@ -25,7 +25,7 @@ function Header() {
         </HeaderNavS>
       </HeaderInnerS>
     </HeaderS>
-  )
+  );
 }
 
 export default Header;
