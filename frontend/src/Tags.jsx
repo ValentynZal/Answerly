@@ -1,9 +1,9 @@
 import React from 'react';
 
-export default function Answer() {
+export default function Tags() {
   return (
     <div style={{ marginTop: '50px' }}>
-      Answer
+      Tags
     </div>
   );
 }
