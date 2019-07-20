@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <HomeContainerS>
       <HomeFormS>
-        <HomeLogoS>
+        <HomeLogoS to="/">
           Answerly
         </HomeLogoS>
         <HomeInputS />
