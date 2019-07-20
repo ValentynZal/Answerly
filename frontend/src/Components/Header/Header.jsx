@@ -16,11 +16,11 @@ function Header() {
           Answerly
         </HeaderLogoS>
         <HeaderNavS>
-          <HeaderNavItemS exact to="/">
-            Home
+          <HeaderNavItemS exact to="/questions">
+            Questions
           </HeaderNavItemS>
-          <HeaderNavItemS exact to="/answer">
-            Answer
+          <HeaderNavItemS exact to="/tags">
+            Tags
           </HeaderNavItemS>
         </HeaderNavS>
       </HeaderInnerS>
