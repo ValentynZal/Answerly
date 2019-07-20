@@ -1,19 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
 import store from './redux';
-
+import history from './history';
 import GlobalStyles from './globalStyles';
 
 import App from './App';
 
 const root = (
   <Provider store={store}>
-    <Router>
+    <ConnectedRouter history={history}>
       <GlobalStyles />
       <App />
-    </Router>
+    </ConnectedRouter>
   </Provider>
 );
 
