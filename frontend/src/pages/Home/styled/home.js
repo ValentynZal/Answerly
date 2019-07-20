@@ -52,6 +52,9 @@ export const HomeButtonS = styled(Link)`
   color: #d7d7d7;
   text-decoration: none;
   padding: 5px 30px;
+  min-width: 100px;
+  display: flex;
+  justify-content: center;
 
   :hover {
     color: #fff;
