@@ -8,6 +8,8 @@ import {
   HeaderNavItemS,
 } from './styled/header';
 
+import Button from '../Button';
+
 function Header() {
   return (
     <HeaderS>
@@ -22,6 +24,12 @@ function Header() {
           <HeaderNavItemS exact to="/tags">
             Tags
           </HeaderNavItemS>
+          <Button exact to="/registration">
+            Registration
+          </Button>
+          <Button exact to="/login">
+            Login
+          </Button>
         </HeaderNavS>
       </HeaderInnerS>
     </HeaderS>

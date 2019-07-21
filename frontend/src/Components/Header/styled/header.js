@@ -18,8 +18,7 @@ export const HeaderS = styled.header`
 
 export const HeaderInnerS = styled.div`
   display: flex;
-  align-items: flex-end;
-
+  align-items: center;
   width: 1000px;
 `;
 
@@ -35,6 +34,8 @@ export const HeaderLogoS = styled(Link)`
 export const HeaderNavS = styled.nav`
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
   padding: 0 8px;
   height: 100%;
 `;
