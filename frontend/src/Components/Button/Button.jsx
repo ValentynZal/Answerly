@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button as BlueButton } from './styled/button';
 import PropTypes from 'prop-types';
+import { Button as BlueButton } from './styled/button';
 
 function Button({to, children}) {
   return (
@@ -11,8 +11,7 @@ function Button({to, children}) {
 }
 
 Button.propTypes = {
-  to: PropTypes.string,
+  to: PropTypes.string.isRequired,
 };
 
 export default Button;
-
