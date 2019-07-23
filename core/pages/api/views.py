@@ -1,123 +1,90 @@
-from snippets.models import Snippet
-from snippets.serializers import *
+from pages.models import *
+from pages.api.serializer import * 
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Q
+from rest_framework import mixins
+from rest_framework import generics
 
 
-# QuestionTaggedList
 # Home
-def SearchList(APIView):
-    def get(self, request, format=None):
-        questions = Question.objects.all()
-        query = request.GET.get('q')
-        if query:
+class SearchList(generics.ListAPIView):
+
+    serializer_class = QuestionSerializer
+
+    def get_queryset(self):
+        queryset = Question.objects.all()
+        query = self.request.query_params.get('q', None)
+        if query is not None:
             questions = Question.objects.filter(
                 Q(title__icontains=query) |
                 Q(content__icontains=query)
             ).distinct()
-        serializer = QuestionSerializer(questions, many=True)
-        return Response(serializer.data)
+        return questions
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
 
-class QuestionList(APIView):
-    """
-    List all questions, or create a new question.
-    """
-    # authentication_classes = [authentication.TokenAuthentication]
-    # permission_classes = [permissions.IsAdminUser]
+class QuestionList(mixins.ListModelMixin,
+                  mixins.CreateModelMixin,
+                  generics.GenericAPIView):
 
-    def get(self, request, format=None):
-        questions = Question.objects.all()
-        serializer = QuestionSerializer(questions, many=True)
-        return Response(serializer.data)
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
 
-    def post(self, request, format=None):
-        serializer = QuestionSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
 
-class QuestionTaggedList(APIView):   
-    """
-    List all questions, or create a new question.
-    """
-    # authentication_classes = [authentication.TokenAuthentication]
-    # permission_classes = [permissions.IsAdminUser]
+class QuestionTaggedList(mixins.ListModelMixin,
+                        generics.GenericAPIView):
 
-    def get_object(self, tag):
-        try:
-            return Question.objects.filter(tags__name=tag)
-        except Question.DoesNotExist:
-            raise Http404
+    serializer_class = QuestionSerializer
+    lookup_url_kwarg = 'tag'
 
-    def get(self, request, pk, format=None):
-        snippet = self.get_object(pk)
-        serializer = QuestionSerializer(snippet)
-        return Response(serializer.data)
+    def get_queryset(self):
+        tag = self.kwargs.get(self.lookup_url_kwarg)
+        questions = Question.objects.filter(tags__name=tag)
+        return questions        
 
-    def put(self, request, pk, format=None):
-        snippet = self.get_object(pk)
-        serializer = QuestionSerializer(question, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
-    def delete(self, request, pk, format=None):
-        question = self.get_object(pk)
-        question.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+   
+class QuestionDetail(mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    mixins.DestroyModelMixin,
+                    generics.GenericAPIView):
 
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+    lookup_field = 'title'
 
-class QuestionDetail(APIView):
-    """
-    Retrieve, update or delete a question instance.
-    """
-    # authentication_classes = [authentication.TokenAuthentication]
-    # permission_classes = [permissions.IsAdminUser]
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
 
-    def get_object(self, title):
-        try:
-            return Question.objects.get(pk=title)
-        except Question.DoesNotExist:
-            raise Http404
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
 
-    def get(self, request, pk, format=None):
-        question = self.get_object(pk)
-        serializer = QuestionSerializer(question)
-        return Response(serializer.data)
-
-    def put(self, request, pk, format=None):
-        question = self.get_object(pk)
-        serializer = QuestionSerializer(question, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, pk, format=None):
-        question = self.get_object(pk)
-        question.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
 
 
-class TagList(APIView):
-    """
-    List all tags, or create a new tag.
-    """
-    def get(self, request, format=None):
-        tags = Tag.objects.all()
-        serializer = TagSerializer(tags, many=True)
-        return Response(serializer.data)
+class TagList(mixins.ListModelMixin,
+             mixins.CreateModelMixin,
+             generics.GenericAPIView):
 
-    def post(self, request, format=None):
-        serializer = TagSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)

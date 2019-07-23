@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import *
+from pages.api.views import *
 
 urlpatterns = [
     # path('', Home.as_view(), name='home'),
@@ -8,5 +8,5 @@ urlpatterns = [
     path('questions/tagged/<str:tag>/', QuestionTaggedList.as_view()),
     path('tags/', TagList.as_view(), name='tags'),
     path('search/', SearchList.as_view(), name='search'),
-
 ]
+

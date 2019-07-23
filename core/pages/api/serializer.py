@@ -1,3 +1,7 @@
+from rest_framework import serializers
+from pages.models import *
+
+
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
@@ -11,8 +15,8 @@ class AnswerSerializer(serializers.ModelSerializer):
 
 
 class QuestionSerializer(serializers.ModelSerializer):
-    tags = TagSerializer(many=True)
-    answers = AnswerSerializer(many=True)
+    tags = TagSerializer(many=True, read_only=True)
+    answers = AnswerSerializer(many=True, read_only=True)
 
     class Meta:
         model = Question
