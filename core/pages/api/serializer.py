@@ -22,4 +22,3 @@ class QuestionSerializer(serializers.ModelSerializer):
         model = Question
         fields = '__all__' 
 
-# ['id', 'title', 'content', 'pub_date', 'author', 'comment_cnt', 'like_cnt', 'tags', 'answers']
