@@ -25,10 +25,10 @@ export default function Home() {
           <HomeButtonS to="/tags">
             Tags
           </HomeButtonS>
-          <ButtonS exact to="/registration">
+          <ButtonS to="/registration">
             Registration
           </ButtonS>
-          <ButtonS exact to="/login">
+          <ButtonS to="/login">
             Login
           </ButtonS>
         </HomeButtonsContainerS>

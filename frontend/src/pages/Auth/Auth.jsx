@@ -1,17 +1,23 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import {
+  register,
+  login,
+} from '../../ducks/user';
 import {
   AuthContainerS,
   AuthFormS,
   AuthLabelS,
 } from './styled/auth';
 
-export default function Auth({ location: { pathname } }) {
+function Auth({ location: { pathname }, register, login }) {
   if (pathname === '/login') {
     return (
       <AuthContainerS>
         <AuthFormS onSubmit={(e) => {
           e.preventDefault();
           console.log('login');
+          login({});
         }}
         >
           <AuthLabelS htmlFor="username">
@@ -35,6 +41,7 @@ export default function Auth({ location: { pathname } }) {
       <AuthFormS onSubmit={(e) => {
         e.preventDefault();
         console.log('registration');
+        register({});
       }}
       >
         <AuthLabelS htmlFor="username">
@@ -60,3 +67,5 @@ export default function Auth({ location: { pathname } }) {
     </AuthContainerS>
   );
 }
+
+export default connect(null, { register, login })(Auth);

@@ -1,7 +1,7 @@
 import {
   all,
   put,
-  takeLatest,
+  take,
   call,
 } from 'redux-saga/effects';
 import { Record } from 'immutable';
@@ -76,7 +76,7 @@ export function logout(userData) {
 
 export function* registerSaga() {
   while (true) {
-    yield takeLatest(REGISTER_REQUEST);
+    yield take(REGISTER_REQUEST);
     try {
       yield call(fetch, '/register');
       yield put({
@@ -93,7 +93,7 @@ export function* registerSaga() {
 
 export function* loginSaga() {
   while (true) {
-    yield takeLatest(LOGIN_REQUEST);
+    yield take(LOGIN_REQUEST);
     try {
       yield call(fetch, '/login');
       yield put({

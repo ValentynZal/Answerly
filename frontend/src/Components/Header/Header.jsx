@@ -24,10 +24,10 @@ function Header() {
           <HeaderNavItemS exact to="/tags">
             Tags
           </HeaderNavItemS>
-          <ButtonS exact to="/registration">
+          <ButtonS to="/registration">
             Registration
           </ButtonS>
-          <ButtonS exact to="/login">
+          <ButtonS to="/login">
             Login
           </ButtonS>
         </HeaderNavS>
