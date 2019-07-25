@@ -8,7 +8,7 @@ import {
   HomeButtonsContainerS,
   HomeButtonS,
 } from './styled/home';
-import Button from '../../Components/Button';
+import ButtonS from '../../StyledComponents/button';
 
 export default function Home() {
   return (
@@ -25,12 +25,12 @@ export default function Home() {
           <HomeButtonS to="/tags">
             Tags
           </HomeButtonS>
-          <Button exact to="/registration">
+          <ButtonS exact to="/registration">
             Registration
-          </Button>
-          <Button exact to="/login">
+          </ButtonS>
+          <ButtonS exact to="/login">
             Login
-          </Button>
+          </ButtonS>
         </HomeButtonsContainerS>
       </HomeFormS>
     </HomeContainerS>
