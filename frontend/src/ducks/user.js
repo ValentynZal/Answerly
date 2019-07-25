@@ -4,8 +4,8 @@ import {
   take,
   call,
 } from 'redux-saga/effects';
+import { createSelector } from 'reselect';
 import { Record } from 'immutable';
-
 // Constants
 const REGISTER_REQUEST = 'USERS_REGISTER_REQUEST';
 const REGISTER_SUCCESS = 'USERS_REGISTER_SUCCESS';
@@ -49,6 +49,11 @@ export function reducer(state = new ReducerRecord(), action) {
 }
 
 // Selectors
+
+export const isAuthedSelector = createSelector(
+  state => state.user.token,
+  token => Boolean(token),
+);
 
 // Action Creators
 
