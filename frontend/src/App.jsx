@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -8,15 +8,19 @@ import Home from './pages/Home';
 import Questions from './pages/Questions';
 import Tags from './pages/Tags';
 import Auth from './pages/Auth';
+import Page404 from './pages/Page404';
 
 function App({ pathname }) {
   return (
     <>
       { pathname !== '/' ? <Header /> : null }
-      <Route exact path="/" component={Home} />
-      <Route exact path="/questions" component={Questions} />
-      <Route exact path="/tags" component={Tags} />
-      <Route exact path={['/registration', '/login']} component={Auth} />
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/questions" component={Questions} />
+        <Route exact path="/tags" component={Tags} />
+        <Route exact path={['/registration', '/login']} component={Auth} />
+        <Route path="*" component={Page404} />
+      </Switch>
     </>
   );
 }
