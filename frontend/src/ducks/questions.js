@@ -2,7 +2,8 @@ import { all, take, put } from 'redux-saga/effects';
 import { Record, OrderedMap } from 'immutable';
 
 // Constants
-export const FETCH_QUESTIONS = 'FETCH_QUESTIONS';
+const FETCH_QUESTIONS_REQUEST = 'FETCH_QUESTIONS_REQUEST';
+const FETCH_QUESTIONS_SUCCESS = 'FETCH_QUESTIONS_SUCCESS';
 
 // Reducer
 export const ReducerRecord = Record({
@@ -15,6 +16,8 @@ export function reducer(state = new ReducerRecord(), action) {
   const { type } = action;
 
   switch (type) {
+    case FETCH_QUESTIONS_SUCCESS:
+      return state;
     default:
       return state;
   }
@@ -26,7 +29,7 @@ export function reducer(state = new ReducerRecord(), action) {
 
 export function fetchQuestions() {
   return {
-    type: FETCH_QUESTIONS,
+    type: FETCH_QUESTIONS_REQUEST,
   };
 }
 
@@ -34,9 +37,9 @@ export function fetchQuestions() {
 
 export function* fetchQuestionsSaga() {
   while (true) {
-    yield take(FETCH_QUESTIONS);
+    yield take(FETCH_QUESTIONS_REQUEST);
     yield put({
-      type: 'TEST',
+      type: 'FETCH_QUESTIONS_SUCCESS',
     });
   }
 }
