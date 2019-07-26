@@ -1,71 +1,67 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Form } from 'react-final-form';
 import {
-  register,
-  login,
+  register as registerAction,
+  login as loginAction,
 } from '../../ducks/user';
-import {
-  AuthContainerS,
-  AuthFormS,
-  AuthLabelS,
-} from './styled/auth';
+import LoginForm from './Components/LoginForm';
+import RegistrationForm from './Components/RegistrationForm';
 
-function Auth({ location: { pathname }, register, login }) {
-  if (pathname === '/login') {
-    return (
-      <AuthContainerS>
-        <AuthFormS onSubmit={(e) => {
-          e.preventDefault();
-          console.log('login');
-          login({});
-        }}
-        >
-          <AuthLabelS htmlFor="username">
-            <span>
-              Username:
-            </span>
-            <input id="username" type="text" name="name" />
-          </AuthLabelS>
-          <AuthLabelS htmlFor="password">
-            Password:
-            <input id="password" type="text" name="name" />
-          </AuthLabelS>
-          <input type="submit" value="Submit" />
-        </AuthFormS>
-      </AuthContainerS>
-    );
-  }
+const AuthForms = ({ location: { pathname }, register, login }) => {
+  const submitHandler = (formFields) => {
+    if (pathname === '/registration') {
+      register(formFields);
+    } else {
+      login(formFields);
+    }
+  };
+
+  const registrationValidator = (values) => {
+    const errors = {};
+    if (!values.username) {
+      errors.username = 'Required';
+    }
+    if (!values.password) {
+      errors.password = 'Required';
+    }
+    if (!values.rPassword) {
+      errors.rPassword = 'Required';
+    } else if (values.rPassword !== values.password) {
+      errors.rPassword = 'Must match';
+    }
+    return errors;
+  };
+
+  const loginValidator = (values) => {
+    const errors = {};
+    if (!values.username) {
+      errors.username = 'Required';
+    }
+    if (!values.password) {
+      errors.password = 'Required';
+    }
+    return errors;
+  };
 
   return (
-    <AuthContainerS>
-      <AuthFormS onSubmit={(e) => {
-        e.preventDefault();
-        console.log('registration');
-        register({});
-      }}
-      >
-        <AuthLabelS htmlFor="username">
-          <span>
-            Username:
-          </span>
-          <input id="username" type="text" name="name" />
-        </AuthLabelS>
-        <AuthLabelS htmlFor="email">
-          Email:
-          <input id="email" type="text" name="name" />
-        </AuthLabelS>
-        <AuthLabelS htmlFor="password">
-          Password:
-          <input id="password" type="text" name="name" />
-        </AuthLabelS>
-        <AuthLabelS htmlFor="duplicatedPassword">
-          Repeat Password:
-          <input id="duplicatedPassword" type="text" name="name" />
-        </AuthLabelS>
-        <input type="submit" value="Submit" />
-      </AuthFormS>
-    </AuthContainerS>
+    <div style={{ marginTop: '50px' }} >
+      <Form
+        onSubmit={submitHandler}
+        validate={pathname === '/registration' ? registrationValidator : loginValidator}
+        render={pathname === '/registration' ? RegistrationForm : LoginForm}
+      />
+    </div>
   );
-}
+};
 
-export default connect(null, { register, login })(Auth);
+AuthForms.propTypes = {
+  register: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+  }).isRequired,
+};
+
+export default connect(null, { register: registerAction, login: loginAction })(AuthForms);

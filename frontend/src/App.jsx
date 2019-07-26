@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import Header from './Components/Header';
+import Header from './assets/Components/Header';
 import Home from './pages/Home';
 import Questions from './pages/Questions';
 import Tags from './pages/Tags';
