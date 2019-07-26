@@ -8,7 +8,7 @@ import {
   HomeButtonsContainerS,
   HomeButtonS,
 } from './styled/home';
-import ButtonS from '../../StyledComponents/button';
+import ButtonS from '../../assets/StyledComponents/button';
 
 export default function Home() {
   return (
