@@ -6,6 +6,7 @@ import {
 } from 'redux-saga/effects';
 import { createSelector } from 'reselect';
 import { Record } from 'immutable';
+import { serverURL } from '../constants';
 // Constants
 const REGISTER_REQUEST = 'USERS_REGISTER_REQUEST';
 const REGISTER_SUCCESS = 'USERS_REGISTER_SUCCESS';
@@ -83,7 +84,7 @@ export function* registerSaga() {
   while (true) {
     yield take(REGISTER_REQUEST);
     try {
-      yield call(fetch, '/register');
+      yield call(fetch, `${serverURL}/accounts/register`);
       yield put({
         type: REGISTER_SUCCESS,
       });
@@ -100,7 +101,7 @@ export function* loginSaga() {
   while (true) {
     yield take(LOGIN_REQUEST);
     try {
-      yield call(fetch, '/login');
+      yield call(fetch, `${serverURL}/accounts/token`);
       yield put({
         type: LOGIN_SUCCESS,
       });
