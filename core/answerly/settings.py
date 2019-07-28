@@ -120,7 +120,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication', # JWT
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
     )    
 }
 

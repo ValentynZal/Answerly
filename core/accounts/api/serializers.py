@@ -4,7 +4,7 @@ User = get_user_model()
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
-    password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
+    # password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
 
     class Meta:
         model = User
@@ -12,7 +12,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             'username',
             'email',
             'password',
-            'password2',
+            # 'password2',
         ]
         extra_kwargs = {'password': {'write_only': True}}
 
@@ -28,12 +28,12 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("User with this username already exists")
         return value
 
-    def validate(self, data):
-        pw  = data.get('password')
-        pw2 = data.pop('password2')
-        if pw != pw2:
-            raise serializers.ValidationError("Passwords must match")
-        return data
+    # def validate(self, data):
+    #     pw  = data.get('password')
+    #     pw2 = data.pop('password2')
+    #     if pw != pw2:
+    #         raise serializers.ValidationError("Passwords must match")
+    #     return data
 
     def create(self, validated_data):  
         print(validated_data)
