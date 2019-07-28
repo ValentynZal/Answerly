@@ -1,5 +1,7 @@
 ## Running
 
+Install [https://docs.docker.com/compose/install/](docker-compose)
+
 ```
 docker-compose build
 docker-compose up
