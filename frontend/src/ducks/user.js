@@ -84,7 +84,15 @@ export function* registerSaga() {
   while (true) {
     yield take(REGISTER_REQUEST);
     try {
-      yield call(fetch, `${serverURL}/accounts/register`);
+      yield call(fetch, `${serverURL}/accounts/register/`, {
+        method: 'POST',
+        body: JSON.stringify({
+          username: 'tt',
+          email: 'w@w.w',
+          password: '123',
+          password2: '123',
+        }),
+      });
       yield put({
         type: REGISTER_SUCCESS,
       });
