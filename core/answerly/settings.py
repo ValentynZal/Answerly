@@ -15,7 +15,7 @@ SECRET_KEY = ')fv!ujycyce4rf##exy8q=zbo4)o5dano73-o9(g3ni-41)ed*'
 DEBUG = True
 DOCKER = True 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [*]
 
 
 # Application definition
