@@ -5,6 +5,13 @@ services:
     image: postgres
     ports:
       - "5432:5432"
+    environment:
+      - POSTGRES_USER=ubuntu
+      - POSTGRES_PASSWORD=ubuntuanswerly
+      - POSTGRES_DB=answerly
+    volumes:
+      - database:/var/lib/postgresql/data
+    restart: always
   django:
     build: ./core
     command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
@@ -26,3 +33,4 @@ services:
 
 volumes:
   node-modules:
+  database:
