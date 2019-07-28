@@ -5,11 +5,12 @@ import { Form } from 'react-final-form';
 import {
   register as registerAction,
   login as loginAction,
+  errorSelector,
 } from '../../ducks/user';
 import LoginForm from './Components/LoginForm';
 import RegistrationForm from './Components/RegistrationForm';
 
-const AuthForms = ({ location: { pathname }, register, login }) => {
+const AuthForms = ({ location: { pathname }, register, login, error }) => {
   const submitHandler = (formFields) => {
     if (pathname === '/registration') {
       register(formFields);
@@ -20,6 +21,9 @@ const AuthForms = ({ location: { pathname }, register, login }) => {
 
   const registrationValidator = (values) => {
     const errors = {};
+    Object.keys(error).forEach((key) => {
+      [errors[key]] = error[key];
+    });
     if (!values.username) {
       errors.username = 'Required';
     }
@@ -49,7 +53,7 @@ const AuthForms = ({ location: { pathname }, register, login }) => {
   };
 
   return (
-    <div style={{ marginTop: '50px' }} >
+    <div style={{ marginTop: '50px' }}>
       <Form
         onSubmit={submitHandler}
         validate={pathname === '/registration' ? registrationValidator : loginValidator}
@@ -67,4 +71,7 @@ AuthForms.propTypes = {
   }).isRequired,
 };
 
-export default connect(null, { register: registerAction, login: loginAction })(AuthForms);
+export default connect(
+  state => ({ error: errorSelector(state) }),
+  { register: registerAction, login: loginAction },
+)(AuthForms);

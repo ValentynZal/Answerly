@@ -23,25 +23,24 @@ const LOGOUT = 'USERS_LOGOUT';
 export const ReducerRecord = Record({
   username: '',
   token: '',
+  error: null,
   loading: false,
   loaded: true,
 }, 'UserRecord');
 
 export function reducer(state = new ReducerRecord(), action) {
-  const { type, payload } = action;
+  const { type, payload, error } = action;
 
   switch (type) {
     case REGISTER_SUCCESS:
       console.log('register success');
       return state;
     case REGISTER_FAILURE:
-      console.log('register failure');
-      return state;
+      return state.set('error', error);
     case LOGIN_SUCCESS:
       return state.merge(payload);
     case LOGIN_FAILURE:
-      console.log('login failure');
-      return state;
+      return state.set('error', error);
     case LOGOUT:
       console.log(LOGOUT);
       return state.clear();
@@ -55,6 +54,11 @@ export function reducer(state = new ReducerRecord(), action) {
 export const isAuthorizedSelector = createSelector(
   state => state.user.token,
   token => Boolean(token),
+);
+
+export const errorSelector = createSelector(
+  state => state.user.error,
+  error => JSON.parse(error),
 );
 
 // Action Creators
@@ -74,7 +78,6 @@ export function login(userData) {
 }
 
 export function logout() {
-  console.log(LOGOUT);
   return {
     type: LOGOUT,
   };
@@ -94,8 +97,9 @@ export function* registerSaga() {
         },
         body: JSON.stringify(userData),
       });
+      const res = yield response.json();
       if (response.status >= 400 && response.status < 600) {
-        throw new Error('Bad response from server');
+        throw new Error(JSON.stringify(res));
       }
       yield put({
         type: REGISTER_SUCCESS,
@@ -104,7 +108,7 @@ export function* registerSaga() {
     } catch (error) {
       yield put({
         type: REGISTER_FAILURE,
-        error,
+        error: error.message,
       });
     }
   }
@@ -122,10 +126,10 @@ export function* loginSaga() {
         },
         body: JSON.stringify(userData),
       });
-      if (response.status >= 400 && response.status < 600) {
-        throw new Error('Bad response from server');
-      }
       const res = yield response.json();
+      if (response.status >= 400 && response.status < 600) {
+        throw new Error(JSON.stringify(res));
+      }
       yield put({
         type: LOGIN_SUCCESS,
         payload: {
@@ -137,7 +141,7 @@ export function* loginSaga() {
     } catch (error) {
       yield put({
         type: LOGIN_FAILURE,
-        error,
+        error: error.message,
       });
     }
   }
