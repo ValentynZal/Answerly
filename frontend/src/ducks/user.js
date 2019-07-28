@@ -18,6 +18,7 @@ const LOGIN_SUCCESS = 'USERS_LOGIN_SUCCESS';
 const LOGIN_FAILURE = 'USERS_LOGIN_FAILURE';
 
 const LOGOUT = 'USERS_LOGOUT';
+const ERROR_REMOVE = 'USERS_ERROR_REMOVE';
 
 // Reducer
 export const ReducerRecord = Record({
@@ -33,7 +34,6 @@ export function reducer(state = new ReducerRecord(), action) {
 
   switch (type) {
     case REGISTER_SUCCESS:
-      console.log('register success');
       return state;
     case REGISTER_FAILURE:
       return state.set('error', error);
@@ -42,8 +42,9 @@ export function reducer(state = new ReducerRecord(), action) {
     case LOGIN_FAILURE:
       return state.set('error', error);
     case LOGOUT:
-      console.log(LOGOUT);
       return state.clear();
+    case ERROR_REMOVE:
+      return state.delete('error');
     default:
       return state;
   }
@@ -80,6 +81,12 @@ export function login(userData) {
 export function logout() {
   return {
     type: LOGOUT,
+  };
+}
+
+export function removeError() {
+  return {
+    type: ERROR_REMOVE,
   };
 }
 

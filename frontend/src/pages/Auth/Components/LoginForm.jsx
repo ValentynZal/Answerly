@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'react-final-form';
 
-const LoginForm = ({ handleSubmit, submitting }) => (
+const LoginForm = ({ handleSubmit, submitting, removeError }) => (
   <form onSubmit={handleSubmit}>
     <h2>Login</h2>
     <div>
@@ -12,7 +12,7 @@ const LoginForm = ({ handleSubmit, submitting }) => (
         {({ input, meta }) => (
           <div>
             <label htmlFor="username">Username</label>
-            <input {...input} id="username" type="text" placeholder="Username" />
+            <input {...input} id="username" type="text" placeholder="Username" onFocus={removeError} />
             {meta.error && meta.touched && <span>{meta.error}</span>}
           </div>
         )}
@@ -23,7 +23,7 @@ const LoginForm = ({ handleSubmit, submitting }) => (
         {({ input, meta }) => (
           <div>
             <label htmlFor="password">Password</label>
-            <input {...input} id="password" type="password" placeholder="Password" />
+            <input {...input} id="password" type="password" placeholder="Password" onFocus={removeError} />
             {meta.error && meta.touched && <span>{meta.error}</span>}
           </div>
         )}
@@ -37,6 +37,7 @@ const LoginForm = ({ handleSubmit, submitting }) => (
 
 LoginForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  removeError: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   pristine: PropTypes.bool.isRequired,
 };

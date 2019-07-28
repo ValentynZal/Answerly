@@ -6,11 +6,12 @@ import {
   register as registerAction,
   login as loginAction,
   errorSelector,
+  removeError as removeErrorAction,
 } from '../../ducks/user';
 import LoginForm from './Components/LoginForm';
 import RegistrationForm from './Components/RegistrationForm';
 
-const AuthForms = ({ location: { pathname }, register, login, error }) => {
+const AuthForms = ({ location: { pathname }, register, login, error, removeError }) => {
   const submitHandler = (formFields) => {
     if (pathname === '/registration') {
       register(formFields);
@@ -21,7 +22,7 @@ const AuthForms = ({ location: { pathname }, register, login, error }) => {
 
   const registrationValidator = (values) => {
     const errors = {};
-    Object.keys(error).forEach((key) => {
+    error && Object.keys(error).forEach((key) => {
       [errors[key]] = error[key];
     });
     if (!values.username) {
@@ -43,6 +44,9 @@ const AuthForms = ({ location: { pathname }, register, login, error }) => {
 
   const loginValidator = (values) => {
     const errors = {};
+    error && Object.keys(error).forEach((key) => {
+      [errors[key]] = error[key];
+    });
     if (!values.username) {
       errors.username = 'Required';
     }
@@ -57,7 +61,16 @@ const AuthForms = ({ location: { pathname }, register, login, error }) => {
       <Form
         onSubmit={submitHandler}
         validate={pathname === '/registration' ? registrationValidator : loginValidator}
-        render={pathname === '/registration' ? RegistrationForm : LoginForm}
+        render={(props) => {
+          if (pathname === '/registration') {
+            return (
+              <RegistrationForm {...props} removeError={removeError} />
+            );
+          }
+          return (
+            <LoginForm {...props} removeError={removeError} />
+          );
+        }}
       />
     </div>
   );
@@ -73,5 +86,9 @@ AuthForms.propTypes = {
 
 export default connect(
   state => ({ error: errorSelector(state) }),
-  { register: registerAction, login: loginAction },
+  {
+    register: registerAction,
+    login: loginAction,
+    removeError: removeErrorAction,
+  },
 )(AuthForms);
