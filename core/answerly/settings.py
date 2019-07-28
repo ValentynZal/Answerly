@@ -13,7 +13,7 @@ SECRET_KEY = ')fv!ujycyce4rf##exy8q=zbo4)o5dano73-o9(g3ni-41)ed*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-DOCKER = True 
+DOCKER = False 
 
 ALLOWED_HOSTS = ['*']
 
@@ -81,8 +81,12 @@ if DOCKER:
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'answerly',
+            'USER': 'ubuntu',
+            'PASSWORD': 'ubuntuanswerly',
+            'HOST': 'localhost',
+            'PORT': '5432',
         }
     }
 
