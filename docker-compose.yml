@@ -1,0 +1,36 @@
+version: '3.3'
+
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=ubuntu
+      - POSTGRES_PASSWORD=ubuntuanswerly
+      - POSTGRES_DB=answerly
+    volumes:
+      - database:/var/lib/postgresql/data
+    restart: always
+  django:
+    build: ./core
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    entrypoint: /entrypoint.sh
+    volumes:
+      - ./core:/core
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  frontend:
+    build: ./frontend
+    command: ["yarn", "start"]
+    volumes:
+      - ./frontend:/frontend
+      - node-modules:/frontend/node_modules
+    ports:
+      - "3000:3000"
+
+volumes:
+  node-modules:
+  database:

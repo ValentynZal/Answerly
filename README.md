@@ -1,10 +1,12 @@
-for windows :
+## Running
+
+Install [docker-compose](https://docs.docker.com/compose/install/) and docker
 
 ```
- pip install -r requirements.txt
- pip install virtualenv
- virtualenv -p python3
- cd \path\to\your\virtualen\env\
- .\Scripts\activate
- python manage.py runserver
- ```
+docker-compose down
+docker-compose build
+docker-compose up
+```
+
+- [http://127.0.0.1:8000](http://127.0.0.1:8000) is the Django app
+- [http://127.0.0.1:3000](http://127.0.0.1:3000) is the React app
