@@ -68,8 +68,12 @@ WSGI_APPLICATION = 'answerly.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'answerly',
+        'USER': 'ubuntu',
+        'PASSWORD': 'ubuntuanswerly',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -147,3 +151,6 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+
+
