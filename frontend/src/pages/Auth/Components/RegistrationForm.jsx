@@ -19,6 +19,17 @@ const RegistrationForm = ({ handleSubmit, submitting }) => (
       </Field>
     </div>
     <div>
+      <Field name="email">
+        {({ input, meta }) => (
+          <div>
+            <label htmlFor="email">Email</label>
+            <input {...input} id="email" type="email" placeholder="Email" />
+            {meta.error && meta.touched && <span>{meta.error}</span>}
+          </div>
+        )}
+      </Field>
+    </div>
+    <div>
       <Field name="password">
         {({ input, meta }) => (
           <div>

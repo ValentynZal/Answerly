@@ -6,6 +6,7 @@ import {
 } from 'redux-saga/effects';
 import { createSelector } from 'reselect';
 import { Record } from 'immutable';
+import history from '../history';
 import { serverURL } from '../constants';
 // Constants
 const REGISTER_REQUEST = 'USERS_REGISTER_REQUEST';
@@ -20,14 +21,14 @@ const LOGOUT = 'USERS_LOGOUT';
 
 // Reducer
 export const ReducerRecord = Record({
-  userName: '',
+  username: '',
   token: '',
   loading: false,
   loaded: true,
-});
+}, 'UserRecord');
 
 export function reducer(state = new ReducerRecord(), action) {
-  const { type } = action;
+  const { type, payload } = action;
 
   switch (type) {
     case REGISTER_SUCCESS:
@@ -37,12 +38,12 @@ export function reducer(state = new ReducerRecord(), action) {
       console.log('register failure');
       return state;
     case LOGIN_SUCCESS:
-      console.log('login success');
-      return state;
+      return state.merge(payload);
     case LOGIN_FAILURE:
       console.log('login failure');
       return state;
     case LOGOUT:
+      console.log(LOGOUT);
       return state.clear();
     default:
       return state;
@@ -51,7 +52,7 @@ export function reducer(state = new ReducerRecord(), action) {
 
 // Selectors
 
-export const isAuthedSelector = createSelector(
+export const isAuthorizedSelector = createSelector(
   state => state.user.token,
   token => Boolean(token),
 );
@@ -72,7 +73,8 @@ export function login(userData) {
   };
 }
 
-export function logout(userData) {
+export function logout() {
+  console.log(LOGOUT);
   return {
     type: LOGOUT,
   };
@@ -82,20 +84,23 @@ export function logout(userData) {
 
 export function* registerSaga() {
   while (true) {
-    yield take(REGISTER_REQUEST);
+    const { payload: userData } = yield take(REGISTER_REQUEST);
     try {
-      yield call(fetch, `${serverURL}/accounts/register/`, {
+      const response = yield call(fetch, `${serverURL}/accounts/register/`, {
         method: 'POST',
-        body: JSON.stringify({
-          username: 'tt',
-          email: 'w@w.w',
-          password: '123',
-          password2: '123',
-        }),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
       });
+      if (response.status >= 400 && response.status < 600) {
+        throw new Error('Bad response from server');
+      }
       yield put({
         type: REGISTER_SUCCESS,
       });
+      history.push('/login');
     } catch (error) {
       yield put({
         type: REGISTER_FAILURE,
@@ -107,12 +112,28 @@ export function* registerSaga() {
 
 export function* loginSaga() {
   while (true) {
-    yield take(LOGIN_REQUEST);
+    const { payload: userData } = yield take(LOGIN_REQUEST);
     try {
-      yield call(fetch, `${serverURL}/accounts/token`);
+      const response = yield call(fetch, `${serverURL}/accounts/token/`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+      if (response.status >= 400 && response.status < 600) {
+        throw new Error('Bad response from server');
+      }
+      const res = yield response.json();
       yield put({
         type: LOGIN_SUCCESS,
+        payload: {
+          token: res.access,
+          username: userData.username,
+        },
       });
+      history.push('/questions');
     } catch (error) {
       yield put({
         type: LOGIN_FAILURE,
@@ -122,9 +143,17 @@ export function* loginSaga() {
   }
 }
 
+export function* logoutSaga() {
+  while (true) {
+    yield take(LOGOUT);
+    yield put({ type: LOGOUT });
+  }
+}
+
 export function* saga() {
   yield all([
     registerSaga(),
     loginSaga(),
+    logoutSaga(),
   ]);
 }

@@ -23,6 +23,9 @@ const AuthForms = ({ location: { pathname }, register, login }) => {
     if (!values.username) {
       errors.username = 'Required';
     }
+    if (!values.email) {
+      errors.email = 'Required';
+    }
     if (!values.password) {
       errors.password = 'Required';
     }
