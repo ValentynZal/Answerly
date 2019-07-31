@@ -1,14 +1,8 @@
-from rest_framework import permissions
+from rest_framework.permissions import AllowAny
+from django.conf import settings
 
-class IsOwnerOrReadOnly(permissions.BasePermission):
-
-    message = "You must be the owner of this content!"
-
-    def has_object_permission(self, request, view, obj):
-        # Read permissions are allowed to any request,
-        # so we'll always allow GET, HEAD or OPTIONS requests.
-        if request.method in permissions.SAFE_METHODS:
-            return True
-
-        # Instance must have an attribute named `owner`.
-        return obj.author == request.user 
+def register_permission_classes():
+    permission_classes = [AllowAny, ]
+    for klass in getattr(settings, 'REST_AUTH_REGISTER_PERMISSION_CLASSES', tuple()):
+        permission_classes.append(import_callable(klass))
+    return tuple(permission_classes)
