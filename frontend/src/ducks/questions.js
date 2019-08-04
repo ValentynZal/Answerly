@@ -45,7 +45,5 @@ export function* fetchQuestionsSaga() {
 }
 
 export function* saga() {
-  yield all([
-    fetchQuestionsSaga(),
-  ]);
+  yield all([fetchQuestionsSaga()]);
 }

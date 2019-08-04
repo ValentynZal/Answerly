@@ -1,8 +1,5 @@
 import {
-  all,
-  put,
-  take,
-  call,
+  all, put, take, call,
 } from 'redux-saga/effects';
 import { createSelector } from 'reselect';
 import { Record } from 'immutable';
@@ -21,13 +18,16 @@ const LOGOUT = 'USERS_LOGOUT';
 const ERROR_REMOVE = 'USERS_ERROR_REMOVE';
 
 // Reducer
-export const ReducerRecord = Record({
-  username: '',
-  token: '',
-  error: null,
-  loading: false,
-  loaded: true,
-}, 'UserRecord');
+export const ReducerRecord = Record(
+  {
+    username: '',
+    token: '',
+    error: null,
+    loading: false,
+    loaded: true,
+  },
+  'UserRecord',
+);
 
 export function reducer(state = new ReducerRecord(), action) {
   const { type, payload, error } = action;
@@ -157,14 +157,12 @@ export function* loginSaga() {
 export function* logoutSaga() {
   while (true) {
     yield take(LOGOUT);
-    yield put({ type: LOGOUT });
+    yield put({
+      type: LOGOUT,
+    });
   }
 }
 
 export function* saga() {
-  yield all([
-    registerSaga(),
-    loginSaga(),
-    logoutSaga(),
-  ]);
+  yield all([registerSaga(), loginSaga(), logoutSaga()]);
 }

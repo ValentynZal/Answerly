@@ -5,7 +5,7 @@ export const HomeContainerS = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #333;
+  background-color: ${props => props.theme.mainColor};
   height: 100vh;
 `;
 
@@ -28,7 +28,7 @@ export const HomeLogoS = styled(Link)`
 
 export const HomeInputS = styled.input`
   border-radius: 3px;
-  background-color: #292929;
+  background-color: ${props => props.theme.secondColor};
   border: 1px solid rgba(0,0,0,.15);
   box-shadow: 0 2px 3px rgba(0,0,0,.06);
   padding-left: .75em;
@@ -46,7 +46,7 @@ export const HomeButtonsContainerS = styled.div`
 `;
 
 export const HomeButtonS = styled(Link)`
-  background-color: #292929;
+  background-color: ${props => props.theme.buttonDarkColor};
   border: 1px solid rgba(0,0,0,.15);
   box-shadow: 0 2px 3px rgba(0,0,0,.06);
   color: #d7d7d7;

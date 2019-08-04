@@ -45,7 +45,5 @@ export function* fetchTagsSaga() {
 }
 
 export function* saga() {
-  yield all([
-    fetchTagsSaga(),
-  ]);
+  yield all([fetchTagsSaga()]);
 }
