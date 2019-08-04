@@ -15,6 +15,7 @@ SECRET_KEY = ')fv!ujycyce4rf##exy8q=zbo4)o5dano73-o9(g3ni-41)ed*'
 DEBUG = True
 DOCKER = True
 
+CORS_ORIGIN_ALLOW_ALL = True
 ALLOWED_HOSTS = ['*']
 
 
@@ -31,7 +32,8 @@ INSTALLED_APPS = [
     'pages',
     'accounts',
     # third party packages
-    'rest_framework',
+    'corsheaders',
+    'rest_framework'
     'rest_framework.authtoken',
     'rest_auth',
     'django.contrib.sites',
@@ -44,6 +46,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

@@ -10,7 +10,27 @@ import {
 
 import ButtonS from '../../StyledComponents/button';
 
-function Header() {
+function Header({ isAuthorized, logout }) {
+  const authButtons = () => {
+    if (isAuthorized) {
+      return (
+        <button type="button" onClick={logout}>
+          Logout
+        </button>
+      );
+    }
+    return (
+      <React.Fragment>
+        <ButtonS to="/registration">
+          Registration
+        </ButtonS>
+        <ButtonS to="/login">
+          Login
+        </ButtonS>
+      </React.Fragment>
+    );
+  };
+
   return (
     <HeaderS>
       <HeaderInnerS>
@@ -24,12 +44,7 @@ function Header() {
           <HeaderNavItemS exact to="/tags">
             Tags
           </HeaderNavItemS>
-          <ButtonS to="/registration">
-            Registration
-          </ButtonS>
-          <ButtonS to="/login">
-            Login
-          </ButtonS>
+          {authButtons()}
         </HeaderNavS>
       </HeaderInnerS>
     </HeaderS>

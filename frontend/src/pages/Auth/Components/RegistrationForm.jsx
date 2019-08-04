@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'react-final-form';
 
-const RegistrationForm = ({ handleSubmit, submitting }) => (
+const RegistrationForm = ({ handleSubmit, submitting, removeError }) => (
   <form onSubmit={handleSubmit}>
     <h2>Registration</h2>
     <div>
@@ -12,7 +12,18 @@ const RegistrationForm = ({ handleSubmit, submitting }) => (
         {({ input, meta }) => (
           <div>
             <label htmlFor="username">Username</label>
-            <input {...input} id="username" type="text" placeholder="Username" />
+            <input {...input} id="username" type="text" placeholder="Username" onFocus={removeError} />
+            {meta.error && meta.touched && <span>{meta.error}</span>}
+          </div>
+        )}
+      </Field>
+    </div>
+    <div>
+      <Field name="email">
+        {({ input, meta }) => (
+          <div>
+            <label htmlFor="email">Email</label>
+            <input {...input} id="email" type="email" placeholder="Email" onFocus={removeError} />
             {meta.error && meta.touched && <span>{meta.error}</span>}
           </div>
         )}
@@ -23,7 +34,7 @@ const RegistrationForm = ({ handleSubmit, submitting }) => (
         {({ input, meta }) => (
           <div>
             <label htmlFor="password">Password</label>
-            <input {...input} id="password" type="password" placeholder="Password" />
+            <input {...input} id="password" type="password" placeholder="Password" onFocus={removeError} />
             {meta.error && meta.touched && <span>{meta.error}</span>}
           </div>
         )}
@@ -34,7 +45,7 @@ const RegistrationForm = ({ handleSubmit, submitting }) => (
         {({ input, meta }) => (
           <div>
             <label htmlFor="rPassword">Repeat Password</label>
-            <input {...input} id="rPassword" type="password" placeholder="Repeat Password" />
+            <input {...input} id="rPassword" type="password" placeholder="Repeat Password" onFocus={removeError} />
             {meta.error && meta.touched && <span>{meta.error}</span>}
           </div>
         )}
@@ -48,6 +59,7 @@ const RegistrationForm = ({ handleSubmit, submitting }) => (
 
 RegistrationForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  removeError: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   pristine: PropTypes.bool.isRequired,
 };

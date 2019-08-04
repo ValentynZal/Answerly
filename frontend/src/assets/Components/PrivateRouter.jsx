@@ -3,14 +3,14 @@ import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { isAuthedSelector } from '../ducks/user';
+import { isAuthorizedSelector } from '../../ducks/user';
 
-function PrivateRoute({ component: Component, isAuthed, ...rest }) {
+function PrivateRoute({ component: Component, isAuthorized, ...rest }) {
   return (
     <Route
       {...rest}
       render={(props) => {
-        if (isAuthed) {
+        if (isAuthorized) {
           return (<Component {...props} />);
         }
         // eslint-disable-next-line react/prop-types
@@ -23,7 +23,7 @@ function PrivateRoute({ component: Component, isAuthed, ...rest }) {
 
 PrivateRoute.propTypes = {
   component: PropTypes.elementType.isRequired,
-  isAuthed: PropTypes.bool.isRequired,
+  isAuthorized: PropTypes.bool.isRequired,
 };
 
-export default connect(state => ({ isAuthed: isAuthedSelector(state) }))(PrivateRoute);
+export default connect(state => ({ isAuthorized: isAuthorizedSelector(state) }))(PrivateRoute);

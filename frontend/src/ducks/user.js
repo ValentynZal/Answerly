@@ -6,6 +6,7 @@ import {
 } from 'redux-saga/effects';
 import { createSelector } from 'reselect';
 import { Record } from 'immutable';
+import history from '../history';
 import { serverURL } from '../constants';
 // Constants
 const REGISTER_REQUEST = 'USERS_REGISTER_REQUEST';
@@ -17,33 +18,33 @@ const LOGIN_SUCCESS = 'USERS_LOGIN_SUCCESS';
 const LOGIN_FAILURE = 'USERS_LOGIN_FAILURE';
 
 const LOGOUT = 'USERS_LOGOUT';
+const ERROR_REMOVE = 'USERS_ERROR_REMOVE';
 
 // Reducer
 export const ReducerRecord = Record({
-  userName: '',
+  username: '',
   token: '',
+  error: null,
   loading: false,
   loaded: true,
-});
+}, 'UserRecord');
 
 export function reducer(state = new ReducerRecord(), action) {
-  const { type } = action;
+  const { type, payload, error } = action;
 
   switch (type) {
     case REGISTER_SUCCESS:
-      console.log('register success');
       return state;
     case REGISTER_FAILURE:
-      console.log('register failure');
-      return state;
+      return state.set('error', error);
     case LOGIN_SUCCESS:
-      console.log('login success');
-      return state;
+      return state.merge(payload);
     case LOGIN_FAILURE:
-      console.log('login failure');
-      return state;
+      return state.set('error', error);
     case LOGOUT:
       return state.clear();
+    case ERROR_REMOVE:
+      return state.delete('error');
     default:
       return state;
   }
@@ -51,9 +52,14 @@ export function reducer(state = new ReducerRecord(), action) {
 
 // Selectors
 
-export const isAuthedSelector = createSelector(
+export const isAuthorizedSelector = createSelector(
   state => state.user.token,
   token => Boolean(token),
+);
+
+export const errorSelector = createSelector(
+  state => state.user.error,
+  error => JSON.parse(error),
 );
 
 // Action Creators
@@ -72,9 +78,15 @@ export function login(userData) {
   };
 }
 
-export function logout(userData) {
+export function logout() {
   return {
     type: LOGOUT,
+  };
+}
+
+export function removeError() {
+  return {
+    type: ERROR_REMOVE,
   };
 }
 
@@ -82,24 +94,28 @@ export function logout(userData) {
 
 export function* registerSaga() {
   while (true) {
-    yield take(REGISTER_REQUEST);
+    const { payload: userData } = yield take(REGISTER_REQUEST);
     try {
-      yield call(fetch, `${serverURL}/accounts/register/`, {
+      const response = yield call(fetch, `${serverURL}/accounts/register/`, {
         method: 'POST',
-        body: JSON.stringify({
-          username: 'tt',
-          email: 'w@w.w',
-          password: '123',
-          password2: '123',
-        }),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
       });
+      const res = yield response.json();
+      if (response.status >= 400 && response.status < 600) {
+        throw new Error(JSON.stringify(res));
+      }
       yield put({
         type: REGISTER_SUCCESS,
       });
+      history.push('/login');
     } catch (error) {
       yield put({
         type: REGISTER_FAILURE,
-        error,
+        error: error.message,
       });
     }
   }
@@ -107,18 +123,41 @@ export function* registerSaga() {
 
 export function* loginSaga() {
   while (true) {
-    yield take(LOGIN_REQUEST);
+    const { payload: userData } = yield take(LOGIN_REQUEST);
     try {
-      yield call(fetch, `${serverURL}/accounts/token`);
+      const response = yield call(fetch, `${serverURL}/accounts/token/`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+      const res = yield response.json();
+      if (response.status >= 400 && response.status < 600) {
+        throw new Error(JSON.stringify(res));
+      }
       yield put({
         type: LOGIN_SUCCESS,
+        payload: {
+          token: res.access,
+          username: userData.username,
+        },
       });
+      history.push('/questions');
     } catch (error) {
       yield put({
         type: LOGIN_FAILURE,
-        error,
+        error: error.message,
       });
     }
+  }
+}
+
+export function* logoutSaga() {
+  while (true) {
+    yield take(LOGOUT);
+    yield put({ type: LOGOUT });
   }
 }
 
@@ -126,5 +165,6 @@ export function* saga() {
   yield all([
     registerSaga(),
     loginSaga(),
+    logoutSaga(),
   ]);
 }
