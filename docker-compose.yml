@@ -14,8 +14,10 @@ services:
     restart: always
   django:
     build: ./core
-    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-    entrypoint: ["/entrypoint.sh"]
+    command: >
+      sh -c "python manage.py makemigrations &&
+        python manage.py migrate &&
+        python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./core:/core
     ports:
@@ -24,7 +26,12 @@ services:
       - db
   frontend:
     build: ./frontend
-    command: ["yarn", "start"]
+    command: >
+      sh -c "yarn install &&
+            yarn start"
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
     volumes:
       - ./frontend:/frontend
       - node-modules:/frontend/node_modules
