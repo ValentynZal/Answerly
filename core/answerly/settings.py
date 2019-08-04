@@ -1,5 +1,18 @@
 import os
 from datetime import timedelta
+import environ
+
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+# reading .env file
+environ.Env.read_env()
+
+# SECURITY WARNING: don't run with debug turned on in production!
+# False if not in os.environ
+DEBUG = env('DEBUG')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -9,13 +22,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ')fv!ujycyce4rf##exy8q=zbo4)o5dano73-o9(g3ni-41)ed*'
+SECRET_KEY = env('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-DOCKER = True
+DOCKER = env.bool('DOCKER', default=False)
 
-ALLOWED_HOSTS = ['*']
+
+ALLOWED_HOSTS = ['*'] 
 
 
 # Application definition
@@ -39,6 +51,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'rest_auth.registration',
     'allauth.socialaccount',
+    # 'django-environ',
 ]
 
 MIDDLEWARE = [
@@ -74,7 +87,7 @@ WSGI_APPLICATION = 'answerly.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
+print(DOCKER)
 if DOCKER:
     DATABASES = {
         'default': {
