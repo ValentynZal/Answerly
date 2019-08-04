@@ -15,14 +15,7 @@ import Page404 from './pages/Page404';
 function App({ pathname, isAuthorized, logout }) {
   return (
     <>
-      { pathname !== '/'
-        ? (
-          <Header
-            isAuthorized={isAuthorized}
-            logout={logout}
-          />
-        )
-        : null }
+      {pathname !== '/' ? <Header isAuthorized={isAuthorized} logout={logout} /> : null}
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/questions" component={Questions} />
@@ -40,7 +33,10 @@ App.propTypes = {
   logout: PropTypes.func.isRequired,
 };
 
-export default connect(state => ({
-  pathname: state.router.location.pathname,
-  isAuthorized: isAuthorizedSelector(state),
-}), { logout: logoutAction })(App);
+export default connect(
+  state => ({
+    pathname: state.router.location.pathname,
+    isAuthorized: isAuthorizedSelector(state),
+  }),
+  { logout: logoutAction },
+)(App);

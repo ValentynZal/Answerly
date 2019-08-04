@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import { Link, NavLink } from 'react-router-dom';
 
-const headerHeight = 40;
-
 export const HeaderS = styled.header`
   display: flex;
   justify-content: center;
@@ -12,8 +10,8 @@ export const HeaderS = styled.header`
   left: 0;
 
   width: 100%;
-  min-height: ${headerHeight}px;
-  background-color: #292d2f;
+  min-height: ${props => props.theme.headerHeight};
+  background-color: ${props => props.theme.mainColor};
 `;
 
 export const HeaderInnerS = styled.div`
@@ -28,7 +26,7 @@ export const HeaderLogoS = styled(Link)`
   color: #fff;
   font-weight: 700;
   text-decoration: none;
-  line-height: ${headerHeight}px;
+  line-height: ${props => props.theme.headerHeight};
 `;
 
 export const HeaderNavS = styled.nav`
@@ -52,7 +50,7 @@ export const HeaderNavItemS = styled(NavLink).attrs({
   font-size: 15px;
   font-weight: 500;
   color: #fff;
-  line-height: ${headerHeight}px;
+  line-height: ${props => props.theme.headerHeight};
   text-decoration: none;
   
   padding: 0 14px;
