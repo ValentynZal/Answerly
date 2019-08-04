@@ -1,9 +1,9 @@
 import React from 'react';
 
-export default function Home() {
+export default function Tags() {
   return (
     <div style={{ marginTop: '50px' }}>
-      Home
+      Tags
     </div>
   );
 }

@@ -1,9 +1,9 @@
 import React from 'react';
 
-export default function Answer() {
+export default function Page404() {
   return (
     <div style={{ marginTop: '50px' }}>
-      Answer
+      404
     </div>
   );
 }

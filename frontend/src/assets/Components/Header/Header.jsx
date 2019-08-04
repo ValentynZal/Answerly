@@ -8,6 +8,8 @@ import {
   HeaderNavItemS,
 } from './styled/header';
 
+import ButtonS from '../../StyledComponents/button';
+
 function Header() {
   return (
     <HeaderS>
@@ -16,16 +18,22 @@ function Header() {
           Answerly
         </HeaderLogoS>
         <HeaderNavS>
-          <HeaderNavItemS exact to="/">
-            Home
+          <HeaderNavItemS exact to="/questions">
+            Questions
           </HeaderNavItemS>
-          <HeaderNavItemS exact to="/answer">
-            Answer
+          <HeaderNavItemS exact to="/tags">
+            Tags
           </HeaderNavItemS>
+          <ButtonS to="/registration">
+            Registration
+          </ButtonS>
+          <ButtonS to="/login">
+            Login
+          </ButtonS>
         </HeaderNavS>
       </HeaderInnerS>
     </HeaderS>
-  )
+  );
 }
 
 export default Header;
