@@ -27,4 +27,4 @@ const root = (
   </Provider>
 );
 
-ReactDOM.render(root, document.getElementById('root'));
+ReactDOM.unstable_createRoot(document.getElementById('root')).render(root);

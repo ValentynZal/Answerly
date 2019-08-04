@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -6,24 +6,41 @@ import PropTypes from 'prop-types';
 import { isAuthorizedSelector, logout as logoutAction } from './ducks/user';
 
 import Header from './assets/Components/Header';
-import Home from './pages/Home';
-import Questions from './pages/Questions';
-import Tags from './pages/Tags';
-import Auth from './pages/Auth';
-import Page404 from './pages/Page404';
+
+const Home = lazy(() => import('./pages/Home'));
+
+const Questions = lazy(() => import('./pages/Questions'));
+
+const Tags = lazy(() => import('./pages/Tags'));
+
+const Auth = lazy(() => import('./pages/Auth'));
+
+const Page404 = lazy(() => import('./pages/Page404'));
+
+const LoadingMessage = () => 'Loading...';
 
 function App({ pathname, isAuthorized, logout }) {
   return (
-    <>
+    <Suspense fallback={<LoadingMessage />} delayMs={1000}>
       {pathname !== '/' ? <Header isAuthorized={isAuthorized} logout={logout} /> : null}
       <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/questions" component={Questions} />
-        <Route exact path="/tags" component={Tags} />
-        <Route exact path={['/registration', '/login']} component={Auth} />
-        <Route path="*" component={Page404} />
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route exact path="/questions">
+          <Questions />
+        </Route>
+        <Route exact path="/tags">
+          <Tags />
+        </Route>
+        <Route exact path={['/registration', '/login']}>
+          <Auth />
+        </Route>
+        <Route path="*">
+          <Page404 />
+        </Route>
       </Switch>
-    </>
+    </Suspense>
   );
 }
 
