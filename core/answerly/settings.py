@@ -32,11 +32,8 @@ INSTALLED_APPS = [
     'pages',
     'accounts',
     # third party packages
-<<<<<<< HEAD
     'corsheaders',
     'rest_framework'
-=======
-    'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
     'django.contrib.sites',
@@ -44,7 +41,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'rest_auth.registration',
     'allauth.socialaccount',
->>>>>>> 44a96907be9316abdbf7d110aa3bc8b64144790d
 ]
 
 MIDDLEWARE = [
