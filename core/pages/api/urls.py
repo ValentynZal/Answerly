@@ -8,5 +8,4 @@ urlpatterns = [
     path('questions/tagged/<str:tag>/', QuestionTaggedList.as_view()),
     path('tags/', TagList.as_view(), name='tags'),
     path('search/', SearchList.as_view(), name='search'),
-]
-
+]          

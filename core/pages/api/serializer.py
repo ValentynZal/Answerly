@@ -3,10 +3,21 @@ from pages.models import *
 
 
 class TagSerializer(serializers.ModelSerializer):
+    use_cnt = serializers.SerializerMethodField(read_only=True)  
+
     class Meta:
         model = Tag
-        fields = '__all__' 
-        read_only_fields = ['use_cnt']
+        fields = [
+            'name',
+            'discription',
+            'use_cnt'
+        ]
+
+    def get_use_cnt(self, obj):
+        cnt = 0
+        tag = obj
+        cnt += Question.objects.filter(tags=tag).count()
+        return cnt
 
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -32,9 +43,9 @@ class QuestionSerializer(serializers.ModelSerializer):
         question.save()
         return question
 
-    def update(self, instance, validated_data):
-        tags_data = validated_data.pop('tags')
-        tags = instance.tags
-        instance.title = validated_data.get('title', instance.title)
-        instance.content = validated_data.get('content', instance.content)
-        instance.save()
+    # def update(self, instance, validated_data):
+    #     tags_data = validated_data.pop('tags')
+    #     tags = instance.tags
+    #     instance.title = validated_data.get('title', instance.title)
+    #     instance.content = validated_data.get('content', instance.content)
+    #     instance.save()5
