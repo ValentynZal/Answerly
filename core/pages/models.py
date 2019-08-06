@@ -36,7 +36,6 @@ class Answer(models.Model):
 class Tag(models.Model):
     name = models.CharField(max_length=50)
     discription = models.CharField(max_length=500, default="This is description")
-    # use_cnt = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name

@@ -94,3 +94,12 @@ class TagList(mixins.ListModelMixin,
 
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+
+class AnswerCreate(mixins.CreateModelMixin,
+                  generics.GenericAPIView):
+
+    serializer_class = AnswerSerializer
+    # permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)

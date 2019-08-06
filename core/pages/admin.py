@@ -16,4 +16,4 @@ class TagAdmin(admin.ModelAdmin):
 
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Answer, AnswerAdmin)
-admin.site.register(Tag, TagAdmin)
+admin.site.register(Tag, TagAdmin) 
