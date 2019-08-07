@@ -7,6 +7,7 @@ from rest_framework import status
 from django.db.models import Q
 from rest_framework import mixins
 from rest_framework import generics
+from rest_framework.viewsets import GenericViewSet
 # from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 # from accounts.api.permissions import IsOwnerOrReadOnly
 
@@ -30,21 +31,6 @@ class SearchList(generics.ListAPIView):
         return self.list(request, *args, **kwargs)
 
 
-class QuestionList(mixins.ListModelMixin,
-                   mixins.CreateModelMixin,
-                   generics.GenericAPIView):
-
-    queryset = Question.objects.all()
-    serializer_class = QuestionSerializer
-    # permission_classes = [AllowAny]
-
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-
-
 class QuestionTaggedList(mixins.ListModelMixin,
                          generics.GenericAPIView):
 
@@ -60,25 +46,53 @@ class QuestionTaggedList(mixins.ListModelMixin,
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
+        
+# class QuestionList(mixins.ListModelMixin,
+#                    mixins.CreateModelMixin,
+#                    generics.GenericAPIView):
 
-class QuestionDetail(mixins.RetrieveModelMixin,
-                     mixins.UpdateModelMixin,
-                     mixins.DestroyModelMixin,
-                     generics.GenericAPIView):
+#     queryset = Question.objects.all()
+#     serializer_class = QuestionSerializer
+#     # permission_classes = [AllowAny]
+
+#     def get(self, request, *args, **kwargs):
+#         return self.list(request, *args, **kwargs)
+
+#     def post(self, request, *args, **kwargs):
+#         return self.create(request, *args, **kwargs)
+
+
+# class QuestionDetail(mixins.RetrieveModelMixin,
+#                      mixins.UpdateModelMixin,
+#                      mixins.DestroyModelMixin,
+#                      generics.GenericAPIView):
+
+#     queryset = Question.objects.all()
+#     serializer_class = QuestionSerializer
+#     # permission_classes = [IsOwnerOrReadOnly]
+#     lookup_field = 'title'
+
+#     def get(self, request, *args, **kwargs):
+#         return self.retrieve(request, *args, **kwargs)
+
+#     def put(self, request, *args, **kwargs):
+#         return self.update(request, *args, **kwargs)
+
+#     def delete(self, request, *args, **kwargs):
+#         return self.destroy(request, *args, **kwargs)
+
+
+class QuestionViewSet(mixins.ListModelMixin,
+                      mixins.CreateModelMixin,
+                      mixins.RetrieveModelMixin,
+                      mixins.UpdateModelMixin,
+                      mixins.DestroyModelMixin,
+                      GenericViewSet):
 
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
-    # permission_classes = [IsOwnerOrReadOnly]
     lookup_field = 'title'
-
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
-
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
+    # permission_classes = [AllowAny]
 
 
 class TagList(mixins.ListModelMixin,

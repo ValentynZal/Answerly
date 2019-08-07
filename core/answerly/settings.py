@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'rest_auth.registration',
     'allauth.socialaccount',
-    # 'django-environ',
 ]
 
 MIDDLEWARE = [
@@ -87,7 +86,6 @@ WSGI_APPLICATION = 'answerly.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-print(DOCKER)
 if DOCKER:
     DATABASES = {
         'default': {
